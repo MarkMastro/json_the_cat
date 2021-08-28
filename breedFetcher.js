@@ -1,12 +1,18 @@
 const request=require('request')
 
-breed=process.argv.slice(2)[0].substring(0,3);
+const fetchBreedDescription=(breed, callback)=>{
 
-request(`https://api.thecatapi.com/v1/breeds/search?q=${breed}`,(error,response,body)=>{
+  request(`https://api.thecatapi.com/v1/breeds/search?q=${breed}`,(error,response,body)=>{
   
-  try{
-  console.log(JSON.parse(body)[0].description)
-  }catch{
-    console.log('error, breed not found')
-  }
-})
+    try{
+      desc=JSON.parse(body)[0].description
+    }catch{
+      desc=null
+      error='breed not found'
+      
+    }
+    callback(error,desc)
+  })
+  
+};
+module.exports={fetchBreedDescription};
